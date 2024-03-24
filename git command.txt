@@ -1,0 +1,5 @@
+git status -- to check status
+git add    -- to add new files
+git add .   -- to add all new files
+git commit -m "message" -- to commit changes 
+git push origin main -- to push all the files and repos to Github
