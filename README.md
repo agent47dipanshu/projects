@@ -1,5 +1,4 @@
-# Test
+# Testing
  This is a test
-
-#Learning 
-I'm learning git and github...
+  
+Learning git and github...
