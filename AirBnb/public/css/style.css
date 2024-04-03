@@ -142,3 +142,8 @@ footer {
 .btns {
      display: flex;
 }
+
+.newBtn{
+     width: 6rem !important;
+     height: 40px !important;
+}
