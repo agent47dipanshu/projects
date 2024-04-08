@@ -80,20 +80,6 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 
-
-// app.get("/test", async (req, res) => {
-//      let sampleListing = new Listing({
-//           title: "Ghar Ghar",
-//           description: "Ghar me raho maze lo",
-//           price: 7000000,
-//           location: " Ghar me ",
-//           country: "Uganda"
-//      });
-//      await sampleListing.save();
-//      console.log("Sample was saved");
-//      res.send("Done");
-// });
-
 app.all("*", (req, res, next) => {
      next(new ExpressError(404, "Page not found!"))
 });

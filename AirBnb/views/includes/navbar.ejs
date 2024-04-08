@@ -16,7 +16,8 @@
           <a class="nav-link" href="/login">Log In</a>
           <% } %>
           <% if(currUser){ %>
-          <a class="nav-link" href="/logout">Log Out</a>
+            <div class="userInfo mt-2 mr-4"><span class="me-2">Hello</span><%= currUser.username %></div>
+          <a class="nav-link ms-4" href="/logout">Log Out</a>
           <% } %>
       </div>
     </div>
