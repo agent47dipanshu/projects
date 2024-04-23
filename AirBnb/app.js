@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
      require('dotenv').config();
 };
 const express = require('express');
@@ -8,7 +8,11 @@ const ejsMate = require('ejs-mate');
 const path = require('path');
 const ExpressError = require("./utils/ExpressError.js");
 const MONGO_URL = 'mongodb://127.0.0.1:27017/project';
+
+const dbUrl = process.env.ATLASDB_URL
+
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const flash = require('connect-flash');
@@ -26,8 +30,21 @@ app.use(express.static(path.join(__dirname, "/public")))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+const store = MongoStore.create({
+     mongoUrl: dbUrl,
+     crypto: {
+          secret: process.env.SECRET,
+     },
+     touchAfter: 60 * 60 * 24
+});
+
+store.on('err', ()=>{
+     console.log('Error in MONGO SESSION STORE', err);
+})
+
 const sessionOptions = {
-     secret: "secretString",
+     store,
+     secret: process.env.SECRET,
      resave: false,
      saveUninitialized: true,
      cookie: {
@@ -36,6 +53,7 @@ const sessionOptions = {
           httpOnly: true
      }
 }
+
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -47,17 +65,17 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use("/", (req, res, next)=>{
+app.use("/", (req, res, next) => {
      res.locals.success = req.flash("success");
      res.locals.error = req.flash("error");
      res.locals.currUser = req.user;
      next();
 });
 
-app.get("/demouser", async (req,res)=>{
+app.get("/demouser", async (req, res) => {
      let fakeUser = new User({
-          email:"dipanshuuk711@gmail.com",
-          username:"Dipanshu"
+          email: "dipanshuuk711@gmail.com",
+          username: "Dipanshu"
      });
 
      let registeredUser = await User.register(fakeUser, "helloworld");
@@ -75,7 +93,7 @@ main()
           console.log(err);
      });
 async function main() {
-     await mongoose.connect(MONGO_URL);
+     await mongoose.connect(dbUrl);
 };
 
 app.use("/listings", listingRouter);
