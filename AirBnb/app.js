@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV != "production"){
+     require('dotenv').config();
+};
 const express = require('express');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
@@ -61,9 +64,9 @@ app.get("/demouser", async (req,res)=>{
      res.send(registeredUser);
 });
 
-app.get("/", (req, res) => {
-     res.send("working");
-});
+// app.get("/", (req, res) => {
+//      res.send("working");
+// });
 
 main()
      .then(() => {
